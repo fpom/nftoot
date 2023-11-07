@@ -146,8 +146,10 @@ def faq(
     _, faqtext, _ = (t.strip() for t in re.split("^## .*$", readme, 2, re.M))
     last = None
     _, masto, _ = connect(account, config)
-    for faq in (f.strip().replace("NFToot", "#NFToot")
-                for f in re.split("^##### ", faqtext, 0, re.M)):
+    faqitems = [f.strip().replace("NFToot", "#NFToot")
+                for f in re.split("^##### ", faqtext, 0, re.M)]
+    for num, faq in enumerate(faqitems, start=1):
+        faq += f"\n#faq #thread {num}/..."
         if not dryrun:
             post = masto.status_post(faq,
                                      visibility=("public" if last is None
@@ -161,7 +163,7 @@ def faq(
         else:
             last += 1
         if verbose:
-            con.log(f"posted [green]#{last}[/]"
+            con.log(f"posted [green]#{last}[/] [dim]({num}/{len(faqitems)})[/]"
                     + (f"\n[dim]{faq}[/]" if verbose else ""))
 
 
