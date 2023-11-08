@@ -82,7 +82,7 @@ Just `git clone`, `cd`, and `pip install .`
 Dependencies:
  - [`typer[all]`](https://typer.tiangolo.com/)
  - [`Mastodon.py`](https://github.com/halcy/Mastodon.py)
- - Python (developed and tested with 3.12)
+ - Python (developed with 3.12, run with 3.9.2)
 
 Then run `nftoot setup` to log into you bot's account.
 Finally run `nftoot update` to check for new followers and generate the corresponding NFToots.
