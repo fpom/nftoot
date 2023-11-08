@@ -59,6 +59,23 @@ It depends, generating a NFToot is not that long, but getting it tooted may take
 Technically, each NFToot is a block a bytes, and they are arranged as a chain of toots in the bot's timeline.
 So, yes, this is actually a blockchain.
 
+##### Can I sell my NFToot?
+
+You can try.
+But remember that, even sold, it will still claim to be owned by you.
+
+##### Isn't NFToots a waste of natural resources?
+
+Somehow yes.
+But we use an advanced green technology that consumes very few energy to generate the NFToots.
+All in all, one NFToot consumes less energy than a lolcat post as shown by this chart and much less than an IA generated text:
+
+```
+NFToot   #
+LOLcat   ###
+ChatGPT  ###########################################
+```
+
 ## Install
 
 Just `git clone`, `cd`, and `pip install .`
