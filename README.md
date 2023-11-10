@@ -82,6 +82,8 @@ Just `git clone`, `cd`, and `pip install .`
 Dependencies:
  - [`typer[all]`](https://typer.tiangolo.com/)
  - [`Mastodon.py`](https://github.com/halcy/Mastodon.py)
+ - [`bs4`](https://www.crummy.com/software/BeautifulSoup/)
+ - [`lxml`](https://lxml.de/)
  - Python (developed with 3.12, run with 3.9.2)
 
 Then run `nftoot setup` to log into you bot's account.
