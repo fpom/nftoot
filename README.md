@@ -1,7 +1,7 @@
 # A bot to generate Non-Fungible Toots
 
-NFToot is a Mastodon bot that posts a NFToot for each new follower.
-Beyond this useful feature, NFToot is a simple Mastodon bot that was decelopped to play with `Mastodon.py` API.
+`nftoot` is a Mastodon bot that posts a NFToot for each new follower.
+Beyond this useful feature, `nftoot` is a simple Mastodon bot that was developed to play with `Mastodon.py` API.
 
 ## FAQ
 
@@ -79,7 +79,7 @@ ChatGPT  ###########################################
 
 ## Install
 
-Just `git clone`, `cd`, and `pip install .`
+Just `pip install nftoot`.
 Dependencies:
  - [`typer[all]`](https://typer.tiangolo.com/)
  - [`Mastodon.py`](https://github.com/halcy/Mastodon.py)

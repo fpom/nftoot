@@ -1,3 +1,4 @@
 /pyrightconfig.json
 __pycache__
 /.python-version
+/dist
