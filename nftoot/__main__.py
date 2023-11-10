@@ -1,4 +1,5 @@
-import configparser
+"CLI to nftoot"
+
 import webbrowser
 import secrets
 import hashlib
@@ -32,14 +33,17 @@ def setup(
                 "--config", "-c",
                 metavar="PATH",
                 help="PATH to configuration file")] = NFTOOT_INI):
+    # read config and check if profile exists
     conf = read_config(config)
     if profile in conf:
         if not Confirm.ask(f"Profile [yellow]{profile}[/] exists, overwrite?"):
             raise Exit(0)
+    # get instance name and create app identity
     instance = Prompt.ask("instance name").strip()
     cfg = {"api_base_url": f"https://{instance}"}
     cfg["client_id"], cfg["client_secret"] = \
         Mastodon.create_app("nftoot", api_base_url=cfg["api_base_url"])
+    # authenticate on the web and get API token
     masto = Mastodon(api_base_url=cfg["api_base_url"],
                      client_id=cfg["client_id"],
                      client_secret=cfg["client_secret"],
@@ -49,6 +53,7 @@ def setup(
     webbrowser.open(url)
     code = Prompt.ask(f"type the code you received").strip()
     cfg["access_token"] = masto.log_in(code=code)
+    # save config
     conf[profile] = cfg
     write_config(conf, config)
 
@@ -77,23 +82,30 @@ def update(
                 metavar="PATH",
                 help="PATH to configuration file")] = NFTOOT_INI):
     instance, masto, profile = connect(account, config)
+    # get the list of followers using paginated responses
     with Status(f"fetching [green]{profile['followers_count']}[/] followers",
                 console=con):
         first_page = masto.account_followers(profile["id"])
         followers = masto.fetch_remaining(first_page)
+    # load previously known followers
     NFTOOT_LOG.touch()
     done = set(at.strip() for at in NFTOOT_LOG.open())
+    # build the list of new followers
     new = [at if "@" in at else at + f"@{instance}"
            for user in followers
            if (at := user["acct"]) and at not in done]
+    # generate nftoots for new followers
     with NFTOOT_LOG.open("a") as log, \
             Progress(transient=True, console=con) as progress:
         for at in progress.track(new, description="posting NFToots"):
+            # fill all but digest
             txt = NFTOOT_TXT.format(owner=f"@{at}",
                                     nonce=secrets.token_hex(4),
                                     digest="{}")
+            # add digest
             sha = hashlib.sha1(txt.encode("utf-8", errors="ignore"))
             txt = txt.format(sha.hexdigest())
+            # post nftoot and log it
             if not dryrun:
                 masto.status_post(txt, visibility="unlisted")
                 log.write(f"{at}\n")
@@ -130,10 +142,12 @@ def faq(
             metavar="PATH",
             help="PATH to configuration file")] = NFTOOT_INI):
     _, masto, profile = connect(account, config)
+    # get already posted FAQ items
     old = get_faq_online(profile["id"], masto)
     if old and not update:
         con.print("[red]FAQ exists[/], use [blue]--update[/] to update")
         raise Exit(3)
+    # update items wrt those in README
     update_faq(masto, old, get_faq_readme(), dryrun, verbose)
 
 

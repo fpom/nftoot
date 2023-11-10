@@ -1,6 +1,7 @@
 # A bot to generate Non-Fungible Toots
 
 NFToot is a Mastodon bot that posts a NFToot for each new follower.
+Beyond this useful feature, NFToot is a simple Mastodon bot that was decelopped to play with `Mastodon.py` API.
 
 ## FAQ
 
